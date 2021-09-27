@@ -16,17 +16,21 @@ class BaseCancelConfirm(models.AbstractModel):
 
     cancel_confirm = fields.Boolean(
         string="Cancel Confirmed",
+        copy=False,
         help="A flag signify that this document is confirmed for cancellation",
     )
     cancel_reason = fields.Text(
         string="Cancel Reason",
+        copy=False,
         help="An optional cancel reason",
     )
 
     def open_cancel_confirm_wizard(self):
-        action = self.env.ref(
-            "base_cancel_confirm.action_cancel_confirm_wizard"
-        ).read()[0]
+        action = (
+            self.env.ref("base_cancel_confirm.action_cancel_confirm_wizard")
+            .sudo()
+            .read()[0]
+        )
         action["context"] = {
             "cancel_res_model": self._name,
             "cancel_res_ids": self.ids,
