@@ -38,6 +38,10 @@ class TierDefinition(models.Model):
             ("field", "Field in related record"),
         ],
     )
+    allow_write_for_reviewer = fields.Boolean(
+        string="Allow Write For Reviewers",
+        default=False,
+    )
     reviewer_id = fields.Many2one(comodel_name="res.users", string="Reviewer")
     reviewer_group_id = fields.Many2one(
         comodel_name="res.groups", string="Reviewer group"
@@ -72,6 +76,9 @@ class TierDefinition(models.Model):
         string="Approve by sequence",
         default=False,
         help="Approval order by the specified sequence number",
+    )
+    approve_sequence_bypass = fields.Boolean(
+        help="Bypassed (auto validated), if previous tier was validated by same reviewer",
     )
 
     @api.onchange("review_type")
